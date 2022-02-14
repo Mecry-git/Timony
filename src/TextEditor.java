@@ -38,18 +38,21 @@ public class TextEditor {
         //line has been traded
         output.append("\n\n").append(line).append("\n");
 
-        BigInteger bigintSN = new BigInteger("0", 16);
+        BigInteger bigintSN = new BigInteger("23", 16);
         int sn = bigintSN.intValue();
-        BigInteger bigintNSN = new BigInteger("1", 16);
+        BigInteger bigintNSN = new BigInteger("0", 16);
         int nsn = bigintNSN.intValue();
 
         StringBuilder pb = new StringBuilder();
         for (int i = 0; i < line.length(); i += 2) {
-            Integer value = Integer.parseInt(line.substring(i, i + 2)) + sn - nsn;
+            Integer value = Integer.parseInt(line.substring(i, i + 2));
+            if (value == 20)
+                value = value + sn - nsn;
             pb.append(value);
         }
         output.append("sn(hex) = ").append(Integer.toHexString(sn)).append(":\n");
         output.append(pb).append("\n");
+        System.out.println(convertHexToString(pb.toString()));
         output.append(convertHexToString(pb.toString())).append("\n");
         output.append(convertStringToHex("Hello")).append("\n");
     }
