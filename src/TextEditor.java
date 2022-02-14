@@ -24,6 +24,8 @@ public class TextEditor {
     }
 
     public static String lastNum = "";
+    public static int sn = 23;
+    public static int value;
     public static void sThread(String line) {
         int a = line.length();
         if ((a & 1) == 1) {
@@ -36,33 +38,37 @@ public class TextEditor {
         }
         //line has been tided
 
-        int sn = 23;
-
-        int value;
         for (int i = 0; i < line.length(); i += 2) {
             value = Integer.parseInt(line.substring(i, i + 2));
             if (value == 20)
                 output.append(" ");
             else {
                 value = value + sn;
-                output.append(decToStr("" + value));
+                output.append(decToAscii("" + value));
             }
         }
-        output.append("\n");
     }
 
-    public static String decToStr(String ascii) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < ascii.length() - 1; i += 2) {
-            String h = ascii.substring(i, (i + 2));
-            int decimal = Integer.parseInt(h, 10);
-            sb.append((char) decimal);
+    public static int wn = 0;
+    public static int ln = 70;
+    private static String decToAscii(String decStr) {
+        StringBuilder output = new StringBuilder("");
+
+        String hexStr = Integer.toHexString(Integer.parseInt(decStr));
+
+        for (int i = 0; i < hexStr.length(); i += 2) {
+            String str = hexStr.substring(i, i + 2);
+            output.append((char) Integer.parseInt(str, 16));
+            if (wn == ln) {
+                wn = 0;
+                output.append("\n");
+            } else wn ++;
         }
-        return sb.toString();
+
+        return output.toString();
     }
 
     public static void writeFile(String fp) {
-        System.out.println("Writing file...");
         try {
             File writeName = new File("output.txt");
             writeName.createNewFile();
@@ -76,6 +82,5 @@ public class TextEditor {
             System.out.println("Writing file false!");
             e.printStackTrace();
         }
-        System.out.println("Completed!");
     }
 }
