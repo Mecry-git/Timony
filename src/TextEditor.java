@@ -57,7 +57,6 @@ public class TextEditor {
         output.append(convertStringToHex("Hello")).append("\n");
     }
 
-
     public static String convertStringToHex(String str){
 
         char[] chars = str.toCharArray();
