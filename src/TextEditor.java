@@ -1,5 +1,4 @@
 import java.io.*;
-import java.math.BigInteger;
 
 public class TextEditor {
     public static StringBuilder output = new StringBuilder();
@@ -16,7 +15,7 @@ public class TextEditor {
         ) {
             String line = br.readLine();
             while (line != null) {
-                throllow(line);
+                sThread(line);
                 line = br.readLine();
             }
         } catch (IOException e) {
@@ -25,7 +24,7 @@ public class TextEditor {
     }
 
     public static String lastNum = "";
-    public static void throllow(String line) {
+    public static void sThread(String line) {
         int a = line.length();
         if ((a & 1) == 1) {
             if (lastNum.length() == 0) {
@@ -35,57 +34,30 @@ public class TextEditor {
                 line += lastNum;
             } else System.exit(-5);
         }
-        //line has been traded
-        output.append("\n\n").append(line).append("\n");
+        //line has been tided
 
-        BigInteger bigintSN = new BigInteger("23", 16);
-        int sn = bigintSN.intValue();
-        BigInteger bigintNSN = new BigInteger("0", 16);
-        int nsn = bigintNSN.intValue();
+        int sn = 23;
 
-        StringBuilder pb = new StringBuilder();
+        int value;
         for (int i = 0; i < line.length(); i += 2) {
-            Integer value = Integer.parseInt(line.substring(i, i + 2));
+            value = Integer.parseInt(line.substring(i, i + 2));
             if (value == 20)
-                value = value + sn - nsn;
-            pb.append(value);
+                output.append(" ");
+            else {
+                value = value + sn;
+                output.append(decToStr("" + value));
+            }
         }
-        output.append("sn(hex) = ").append(Integer.toHexString(sn)).append(":\n");
-        output.append(pb).append("\n");
-        System.out.println(convertHexToString(pb.toString()));
-        output.append(convertHexToString(pb.toString())).append("\n");
-        output.append(convertStringToHex("Hello")).append("\n");
+        output.append("\n");
     }
 
-    public static String convertStringToHex(String str){
-
-        char[] chars = str.toCharArray();
-
-        StringBuilder hex = new StringBuilder();
-        for (char aChar : chars) {
-            hex.append(Integer.toHexString((int) aChar));
-        }
-
-        return hex.toString();
-    }
-    public static String convertHexToString(String hex){
-
+    public static String decToStr(String ascii) {
         StringBuilder sb = new StringBuilder();
-        //StringBuilder temp = new StringBuilder();
-
-        //49204c6f7665204a617661 split into two characters 49, 20, 4c...
-        for( int i=0; i<hex.length()-1; i+=2 ){
-
-            //grab the hex in pairs
-            String output = hex.substring(i, (i + 2));
-            //convert hex to decimal
-            int decimal = Integer.parseInt(output, 16);
-            //convert the decimal to character
-            sb.append((char)decimal);
-
-            //temp.append(decimal);
+        for (int i = 0; i < ascii.length() - 1; i += 2) {
+            String h = ascii.substring(i, (i + 2));
+            int decimal = Integer.parseInt(h, 10);
+            sb.append((char) decimal);
         }
-
         return sb.toString();
     }
 
