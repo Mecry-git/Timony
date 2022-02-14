@@ -47,7 +47,6 @@ public class TextEditor {
         for (int i = 0; i < line.length(); i += 2) {
             Integer value = Integer.parseInt(line.substring(i, i + 2)) + sn - nsn;
             pb.append(value);
-            output.append(value).append("\n");
         }
         output.append("sn(hex) = ").append(Integer.toHexString(sn)).append(":\n");
         output.append(pb).append("\n");
