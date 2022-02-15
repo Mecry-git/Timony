@@ -4,7 +4,7 @@ public class Main {
     public static StringBuilder input = new StringBuilder();
     public static StringBuilder out = new StringBuilder();
     public static StringBuilder output = new StringBuilder();
-    public static int value;
+    private static final int ln = 80;
 
 
     public static void main(String[] args) {
@@ -14,7 +14,7 @@ public class Main {
         writeFile(output.toString());
     }
 
-    public static void readFile() {
+    private static void readFile() {
         String pathname = "input.txt";
         try (FileReader reader = new FileReader(pathname);
              BufferedReader br = new BufferedReader(reader)
@@ -30,7 +30,8 @@ public class Main {
     }
 
     private static final int SN = 23;
-    public static void decryptInput() {
+    private static void decryptInput() {
+        int value;
         for (int i = 0; i < input.length(); i += 2) {
             value = Integer.parseInt(input.substring(i, i + 2));
             if (value == 20)
@@ -41,26 +42,26 @@ public class Main {
             }
         }
     }
-    public static void decryptOut() {
-        char outT;
+    private static void decryptOut() {
+        char outT, pun;
         for (int i = 0; i < out.length(); i ++) {
             outT = out.charAt(i);
             if (outT == '%') {
-                output.append((char) Integer.parseInt(out.substring(i + 1, i + 3), 16));
-                i += 2;
-            } else if (outT == ':') {
-                System.out.println(":");
-                String pw = input.substring(input.length() - 6, input.length());
-                output.append(": ").append(pw);
-                System.out.println("The password is : " + pw + "!");
-                System.exit(0);
+                pun = (char) Integer.parseInt(out.substring(i + 1, i + 3), 16);
+                if (pun == ':') {
+                    String pw = input.substring(input.length() - out.length() + i + 2, input.length());
+                    output.append(": ").append(pw);
 
+                    output = makeLineFeed(output.toString());
+                    break;
+                } else {
+                    output.append(pun);
+                    i += 2;
+                }
             } else output.append(outT);
         }
     }
 
-    public static int wn = 0;
-    public static int ln = 68;
     private static String decToAscii(String decStr) {
         StringBuilder output = new StringBuilder();
 
@@ -69,17 +70,29 @@ public class Main {
         for (int i = 0; i < hexStr.length(); i += 2) {
             String str = hexStr.substring(i, i + 2);
             output.append((char) Integer.parseInt(str, 16));
-
-            if (wn == ln) {
-                wn = 0;
-                output.append("\n");
-            } else wn ++;
         }
 
         return output.toString();
     }
 
-    public static void writeFile(String fp) {
+    private static StringBuilder makeLineFeed(String s) {
+        String[] str = s.split(" ");
+        StringBuilder buffer = new StringBuilder();
+        int len = 0;
+        for (String value : str) {
+            len += value.length();
+            if (len > ln) {
+                buffer.append("\n").append(value).append(" ");
+                len = value.length() + 1;
+            } else {
+                buffer.append(value).append(" ");
+                len++;
+            }
+        }
+        return buffer;
+    }
+
+    private static void writeFile(String fp) {
         try {
             File writeName = new File("output.txt");
             writeName.createNewFile();
