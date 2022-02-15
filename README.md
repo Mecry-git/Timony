@@ -1,6 +1,8 @@
 # Timony
 The game *MrTomatoS's* **java** _parsing tool_
 ### If you want to use Timony, I recommand you use the released versions! And the guide is also there!
+## If you are in China or caused by some reason, can't download github's files, here are some download links with BaiduNetDisk, passwords are always "IlvM":
+[Timony1.0](https://pan.baidu.com/s/1s7bX1iDFNM9xa4aaJ_FEsA?pwd=IlvM)
 
 The input.txt is the UselessTEXT.txt and it must be **UTF-8** form
 
