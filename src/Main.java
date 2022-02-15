@@ -1,10 +1,16 @@
 import java.io.*;
 
-public class TextEditor {
+public class Main {
+    public static StringBuilder input = new StringBuilder();
+    public static StringBuilder out = new StringBuilder();
     public static StringBuilder output = new StringBuilder();
+    public static int value;
+
 
     public static void main(String[] args) {
         readFile();
+        decryptInput();
+        decryptOut();
         writeFile(output.toString());
     }
 
@@ -15,7 +21,7 @@ public class TextEditor {
         ) {
             String line = br.readLine();
             while (line != null) {
-                sThread(line);
+                input.append(line);
                 line = br.readLine();
             }
         } catch (IOException e) {
@@ -23,42 +29,47 @@ public class TextEditor {
         }
     }
 
-    public static String lastNum = "";
-    public static int sn = 23;
-    public static int value;
-    public static void sThread(String line) {
-        int a = line.length();
-        if ((a & 1) == 1) {
-            if (lastNum.length() == 0) {
-                lastNum = line.substring(line.length() - 1);
-                line = line.substring(0, line.length() - 1);
-            } else if (lastNum.length() == 1) {
-                line += lastNum;
-            } else System.exit(-5);
-        }
-        //line has been tided
-
-        for (int i = 0; i < line.length(); i += 2) {
-            value = Integer.parseInt(line.substring(i, i + 2));
+    private static final int SN = 23;
+    public static void decryptInput() {
+        for (int i = 0; i < input.length(); i += 2) {
+            value = Integer.parseInt(input.substring(i, i + 2));
             if (value == 20)
-                output.append(" ");
+                out.append(" ");
             else {
-                value = value + sn;
-                output.append(decToAscii("" + value));
+                value = value + SN;
+                out.append(decToAscii("" + value));
             }
+        }
+    }
+    public static void decryptOut() {
+        char outT;
+        for (int i = 0; i < out.length(); i ++) {
+            outT = out.charAt(i);
+            if (outT == '%') {
+                output.append((char) Integer.parseInt(out.substring(i + 1, i + 3), 16));
+                i += 2;
+            } else if (outT == ':') {
+                System.out.println(":");
+                String pw = input.substring(input.length() - 6, input.length());
+                output.append(": ").append(pw);
+                System.out.println("The password is : " + pw + "!");
+                System.exit(0);
+
+            } else output.append(outT);
         }
     }
 
     public static int wn = 0;
-    public static int ln = 70;
+    public static int ln = 68;
     private static String decToAscii(String decStr) {
-        StringBuilder output = new StringBuilder("");
+        StringBuilder output = new StringBuilder();
 
         String hexStr = Integer.toHexString(Integer.parseInt(decStr));
 
         for (int i = 0; i < hexStr.length(); i += 2) {
             String str = hexStr.substring(i, i + 2);
             output.append((char) Integer.parseInt(str, 16));
+
             if (wn == ln) {
                 wn = 0;
                 output.append("\n");
